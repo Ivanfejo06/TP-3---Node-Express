@@ -63,6 +63,8 @@ app.get("/matematica/dividir", (req, res) => {
   }
 });
 
+//Modulos omdb
+
 app.get("/omdb/searchbypage", async (req, res) => {
   const { search, p } = req.query;
   try {
@@ -90,6 +92,44 @@ app.get("/omdb/getbyomdbid", async (req, res) => {
     res.status(200).json(result);
   } catch (error) {
     res.status(500).send("Error interno del servidor");
+  }
+});
+
+//Modulos alumno
+
+const alumnosArray = [];
+alumnosArray.push(new Alumno("Esteban Dido" , "22888444", 20));
+alumnosArray.push(new Alumno("Matias Queroso", "28946255", 51));
+alumnosArray.push(new Alumno("Elba Calao" , "32623391", 18));
+
+app.get('/alumno', (req, res) => {
+  res.status(200).json(alumnosArray);
+});
+
+app.get('/alumnos/:dni', (req, res) => {
+  const alumno = alumnosArray.find(alumno => alumno.DNI === req.params.dni);
+  if (alumno) {
+    res.status(200).json(alumno);
+  } else {
+    res.status(404).json({ message: 'Alumno no encontrado' });
+  }
+});
+
+app.post('/alumnos', (req, res) => {
+  const { nombre, dni, edad } = req.body;
+  const nuevoAlumno = new Alumno(nombre, dni, edad);
+  alumnosArray.push(nuevoAlumno);
+  res.status(201).json({ message: 'Alumno creado', alumno: nuevoAlumno });
+});
+
+app.delete('/alumnos', (req, res) => {
+  const { dni } = req.body;
+  const alumnoIndex = alumnosArray.findIndex(alumno => alumno.DNI === dni);
+  if (alumnoIndex !== -1) {
+    alumnosArray.splice(alumnoIndex, 1);
+    res.status(200).json({ message: 'Alumno eliminado' });
+  } else {
+    res.status(404).json({ message: 'Alumno no encontrado' });
   }
 });
 

@@ -1,7 +1,7 @@
 class Alumno {
-    constructor(username, DNI, edad) {
+    constructor(username, dni, edad) {
       this.username = username;
-      this.DNI = DNI;
+      this.DNI = dni;
       this.edad = edad;
     }
 }
