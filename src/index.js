@@ -32,6 +32,67 @@ app.get("/validarfecha/:ano/:mes/:dia", (req, res) => {
     }
 });
 
+//Modulo matematica.js
+
+app.get("/matematica/sumar", (req, res) => {
+  const { n1, n2 } = req.query;
+  const resultado = sumar(parseFloat(n1), parseFloat(n2));
+  res.status(200).send(`El resultado de la suma es: ${resultado}`);
+});
+
+app.get("/matematica/restar", (req, res) => {
+  const { n1, n2 } = req.query;
+  const resultado = restar(parseFloat(n1), parseFloat(n2));
+  res.status(200).send(`El resultado de la resta es: ${resultado}`);
+});
+
+app.get("/matematica/multiplicar", (req, res) => {
+  const { n1, n2 } = req.query;
+  const resultado = multiplicar(parseFloat(n1), parseFloat(n2));
+  res.status(200).send(`El resultado de la multiplicacion es: ${resultado}`);
+});
+
+app.get("/matematica/dividir", (req, res) => {
+  const { n1, n2 } = req.query;
+  if(n2 != 0){
+    const resultado = dividir(n1, n2);
+    res.status(200).send(`El resultado de la resta es: ${resultado}`)
+  }
+  else{
+    res.status(200).send(`El divisor no puede ser 0!`)
+  }
+});
+
+app.get("/omdb/searchbypage", async (req, res) => {
+  const { search, p } = req.query;
+  try {
+    const result = await OMDBSearchByPage(search, p);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).send("Error interno del servidor");
+  }
+});
+
+app.get("/omdb/searchcomplete", async (req, res) => {
+  const { search } = req.query;
+  try {
+    const result = await OMDBSearchComplete(search);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).send("Error interno del servidor");
+  }
+});
+
+app.get("/omdb/getbyomdbid", async (req, res) => {
+  const { imdbID } = req.query;
+  try {
+    const result = await OMDBGetByImdbID(imdbID);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).send("Error interno del servidor");
+  }
+});
+
 //
 // Inicio el Server y lo pongo a escuchar.
 //
