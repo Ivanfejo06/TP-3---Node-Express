@@ -5,6 +5,7 @@ import axios from "axios";
 import https from "https";
 import express from "express"; // hacer npm i express
 import cors from "cors"; // hacer npm i cors
+import ValidacionesHelper from './models/validacionesHelper.js'
 
 const app = express();
 const port = 3000;
@@ -136,6 +137,16 @@ app.delete('/alumnos', (req, res) => {
 //
 // Inicio el Server y lo pongo a escuchar.
 //
+
 app.listen(port, () => {
 console.log(`Example app listening on port ${port}`)
+})
+
+app.get('/omdb/searchbypage', async (req, res) => {
+let search = ValidacionesHelper.getStringOrDefault(req.query.search, '');
+let p = ValidacionesHelper.getIntegerOrDefault(req.query.p, 1);
+
+let returnObject = await OMDBSearchComplete(p);
+res.status(200).send(returnObject);
+
 })
